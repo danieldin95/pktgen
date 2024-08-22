@@ -9,9 +9,7 @@
 #
 
 # Example:
-# export DST_MIN=5201
-# export DST_MAX=5201
-# ./pktgen_sample02_multiqueue.sh -s 64 -i tapacfe4c30-05 -d 192.168.10.117 -m fa:16:3e:25:14:27 -n 0 -t 32 
+# ./pktgen_sample02_multiqueue.sh -s 64 -i tapacfe4c30-05 -d 192.168.10.117 -m fa:16:3e:25:14:27 -n 0 -t 2 
 
 basedir=`dirname $0`
 source ${basedir}/functions.sh
@@ -20,6 +18,7 @@ root_check_run_with_sudo "$@"
 # Required param: -i dev in $DEV
 source ${basedir}/parameters.sh
 
+[ -z "$BURST" ] && BURST="32" # vhost-user default is 32
 [ -z "$COUNT" ] && COUNT="100000" # Zero means indefinitely
 
 # Base Config
@@ -30,7 +29,7 @@ DELAY="0"        # Zero means max speed
 UDP_MIN=9
 UDP_MAX=909
 
-[ -z "$DST_MIN" ] && DST_MIN=9
+[ -z "$DST_MIN" ] && DST_MIN=909
 [ -z "$DST_MAX" ] && DST_MAX=909
 
 # (example of setting default params in your script)
@@ -75,6 +74,7 @@ for ((thread = $F_THREAD; thread <= $L_THREAD; thread++)); do
     pg_set $dev "udp_src_max $UDP_MAX"
     pg_set $dev "udp_dst_min $DST_MIN"
     pg_set $dev "udp_dst_max $DST_MAX"
+    pg_set $dev "burst $BURST"
 done
 
 # start_run
