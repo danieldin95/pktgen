@@ -7,7 +7,7 @@ import ipaddress
 import multiprocessing
 
 
-interval = 10
+interval = 100
 burst = 10000
 udp_port = 0
 
@@ -31,7 +31,7 @@ def loop_forever(segment):
         last_at = time.time()
         send_once(sock, start_ip, end_ip)
         elapsed = time.time() - last_at
-        print('Send packets during ', elapsed * 1000, 'ms')
+        print(time.ctime(), 'Send packets during ', elapsed * 1000, 'ms')
         if elapsed < interval:
             time.sleep(interval - elapsed)
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     parser.add_argument('--end-ip', default='192.255.255.254', help='ip address end at')
     parser.add_argument('--udp-port', default=99, type=int, help='port number for udp packet')
     parser.add_argument('--burst', default=10000, type=int, help='burst packet size')
-    parser.add_argument('--interval', default=10, type=int, help='seconds of period')
+    parser.add_argument('--interval', default=10.0, type=float, help='seconds of period')
     parser.add_argument('--threads', default=2, type=int, help='number of threads')
 
     args = parser.parse_args()
