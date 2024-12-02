@@ -17,7 +17,7 @@ def send_once(sock, start_ip, end_ip):
     for i in range(0, burst):
         cursor += 1
         cursor = min(cursor, end_ip)
-        sock.sendto(b'from multicast_send.py: ' +
+        sock.sendto(b'from packet_send.py: ' +
                 f'dest: {cursor}, port: {udp_port + i}'.encode(), (str(cursor), udp_port + i))
 
 
